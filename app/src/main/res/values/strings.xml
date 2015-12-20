@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">EtsyWatcher</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="api_key">l6pdqjuf7hdf97h1yvzadfce</string>
+    <string name="search">Search</string>
+    <string name="search_for_goods">Search for goods</string>
+    <string name="saved_goods">Saved goods</string>
+</resources>
