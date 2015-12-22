@@ -1,6 +1,8 @@
 package com.tuccro.etsywatcher.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.model.Item;
+import com.tuccro.etsywatcher.ui.DetailsActivity;
 
 import java.util.List;
 
@@ -41,8 +44,18 @@ public class SavedListAdapter extends RecyclerView.Adapter<SavedListAdapter.View
         holder.textDescribe.setText(item.getTitle());
 
         if (!item.getImagesUrls().isEmpty()) {
-            Picasso.with(context).load(item.getImagesUrls().get(0)).into(holder.imageThumbnail);
+            Picasso.with(context).load(item.getImagesUrls().get(0))
+                    .centerCrop().resize(300, 300).into(holder.imageThumbnail);
         }
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailsActivity.class);
+                intent.putExtra(DetailsActivity.ATTR_ITEM, item);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -52,12 +65,14 @@ public class SavedListAdapter extends RecyclerView.Adapter<SavedListAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardView;
         ImageView imageThumbnail;
         TextView textDescribe;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
             imageThumbnail = (ImageView) itemView.findViewById(R.id.imageThumbnail);
             textDescribe = (TextView) itemView.findViewById(R.id.textDescribe);
         }

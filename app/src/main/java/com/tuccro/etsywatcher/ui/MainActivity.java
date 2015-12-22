@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.tuccro.etsywatcher.R;
+import com.tuccro.etsywatcher.db.DBObject;
 import com.tuccro.etsywatcher.loaders.CategoriesLoader;
 import com.tuccro.etsywatcher.loaders.ImagesUrlsLoader;
 import com.tuccro.etsywatcher.loaders.ItemsLoader;
@@ -152,6 +153,10 @@ public class MainActivity extends AppCompatActivity
 
                 items = (List<Item>) data;
                 this.itemsList = items;
+
+                DBObject dbObject = new DBObject(this);
+
+                for(Item item:items) dbObject.addItemToDB(item);
 
                 searchFragment.fillList(itemsList);
                 searchFragment.setRefreshLayoutRefreshing(false);

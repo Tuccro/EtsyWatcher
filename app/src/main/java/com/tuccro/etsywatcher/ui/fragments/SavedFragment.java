@@ -3,9 +3,9 @@ package com.tuccro.etsywatcher.ui.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +34,13 @@ public class SavedFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.listSaved);
 
-//        final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        recyclerView.setLayoutManager(layoutManager);
+        final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager
-                = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+//        StaggeredGridLayoutManager staggeredGridLayoutManager
+//                = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -50,10 +50,14 @@ public class SavedFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     public void initList() {
-        DBObject dbObject = new DBObject(getActivity());
-        itemList = dbObject.getItemsListFromDB();
-        savedListAdapter = new SavedListAdapter(getActivity(), itemList);
-        recyclerView.setAdapter(savedListAdapter);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBObject dbObject = new DBObject(getActivity());
+                List<Item> items = dbObject.getItemsListFromDB();
+                updateUI(items);
+            }
+        }).start();
     }
 
     @Override
@@ -62,5 +66,17 @@ public class SavedFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mSwipeRefreshLayout.setRefreshing(true);
         initList();
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void updateUI(final List<Item> items) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                itemList = items;
+                savedListAdapter = new SavedListAdapter(getActivity(), itemList);
+                recyclerView.setAdapter(savedListAdapter);
+            }
+        });
     }
 }

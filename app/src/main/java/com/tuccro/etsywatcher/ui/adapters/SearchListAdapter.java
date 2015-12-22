@@ -1,7 +1,8 @@
 package com.tuccro.etsywatcher.ui.adapters;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.model.Item;
+import com.tuccro.etsywatcher.ui.DetailsActivity;
 
 import java.util.List;
 
@@ -36,14 +38,32 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Item item = itemList.get(position);
 
         holder.textDescribe.setText(item.getTitle());
 
         if (!item.getImagesUrls().isEmpty()) {
-            Picasso.with(context).load(item.getImagesUrls().get(0)).into(holder.imageThumbnail);
+            Picasso.with(context).load(item.getImagesUrls().get(0))
+                    .centerCrop().resize(300, 300).into(holder.imageThumbnail);
         }
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailsActivity.class);
+                intent.putExtra(DetailsActivity.ATTR_ITEM, item);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.textDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemList.remove(item);
+                SearchListAdapter.this.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -53,14 +73,18 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardView;
         ImageView imageThumbnail;
         TextView textDescribe;
+        TextView textDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
             imageThumbnail = (ImageView) itemView.findViewById(R.id.imageThumbnail);
             textDescribe = (TextView) itemView.findViewById(R.id.textDescribe);
+            textDelete = (TextView) itemView.findViewById(R.id.textDelete);
         }
     }
 }
