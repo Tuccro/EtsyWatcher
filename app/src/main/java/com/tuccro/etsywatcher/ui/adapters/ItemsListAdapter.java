@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.ViewHolder> {
 
     protected List<Item> itemList;
-    Context context;
+    protected Context context;
 
     public ItemsListAdapter(Context context, List<Item> itemList) {
         this.context = context;
@@ -60,14 +60,14 @@ public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAda
         });
     }
 
-    abstract void onDeleteClick(Item item);
-
-    abstract void onCardClick(Item item);
-
     @Override
     public int getItemCount() {
         return itemList.size();
     }
+
+    protected abstract void onDeleteClick(Item item);
+
+    protected abstract void onCardClick(Item item);
 
     class ViewHolder extends RecyclerView.ViewHolder {
 

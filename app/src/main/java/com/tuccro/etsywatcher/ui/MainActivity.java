@@ -13,7 +13,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.db.DBObject;
@@ -155,8 +154,6 @@ public class MainActivity extends AppCompatActivity
                 this.itemsList = items;
 
                 DBObject dbObject = new DBObject(this);
-
-                for(Item item:items) dbObject.addItemToDB(item);
 
                 searchFragment.fillList(itemsList);
                 searchFragment.setRefreshLayoutRefreshing(false);

@@ -2,6 +2,7 @@ package com.tuccro.etsywatcher.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 import com.tuccro.etsywatcher.model.Item;
 import com.tuccro.etsywatcher.ui.DetailsActivity;
@@ -18,13 +19,13 @@ public class SearchItemsListAdapter extends ItemsListAdapter {
     }
 
     @Override
-    void onDeleteClick(Item item) {
+    protected void onDeleteClick(Item item) {
         super.itemList.remove(item);
         super.notifyDataSetChanged();
     }
 
     @Override
-    void onCardClick(Item item) {
+    protected void onCardClick(Item item) {
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra(DetailsActivity.ATTR_ITEM, item);
         context.startActivity(intent);

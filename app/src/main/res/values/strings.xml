@@ -7,4 +7,5 @@
     <string name="search">Search</string>
     <string name="search_for_goods">Search for goods</string>
     <string name="saved_goods">Saved goods</string>
+    <string name="add_favorite">Add to favorite</string>
 </resources>

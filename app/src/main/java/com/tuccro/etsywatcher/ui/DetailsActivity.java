@@ -3,6 +3,8 @@ package com.tuccro.etsywatcher.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +26,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_details);
+        initToolbar();
 
         TextView textView = (TextView) findViewById(R.id.text);
         LinearLayout layoutImages = (LinearLayout) findViewById(R.id.layoutImages);
@@ -47,6 +50,18 @@ public class DetailsActivity extends AppCompatActivity {
         textView.setText(stringBuilder.toString());
     }
 
+
+    private void initToolbar() {
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
     View insertPhoto(String path) {
 
         LinearLayout layout = new LinearLayout(getApplicationContext());
@@ -55,5 +70,13 @@ public class DetailsActivity extends AppCompatActivity {
 
         layout.addView(imageView);
         return layout;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+
+        return true;
     }
 }

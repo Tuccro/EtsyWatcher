@@ -49,6 +49,42 @@ public class DBObject {
         }
     }
 
+    public void deleteItemFromDB(Item item) {
+
+        try {
+            openDatabase();
+            database.delete(DBConstants.DB_ITEMS_TABLE_NAME
+                    , DBConstants.DB_ITEMS_TABLE_ID + "=" + String.valueOf(item.getId())
+                    , null);
+            database.delete(DBConstants.DB_IMAGES_TABLE_NAME
+                    , DBConstants.DB_IMAGES_TABLE_ID + "=" + String.valueOf(item.getId())
+                    , null);
+            closeDatabase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isItemExistsInDB(Item item) {
+
+        try {
+            openDatabase();
+
+            Cursor cursor = database.query(DBConstants.DB_ITEMS_TABLE_NAME
+                    , null
+                    , DBConstants.DB_ITEMS_TABLE_ID + "=" + String.valueOf(item.getId())
+                    , null, null, null, null);
+            closeDatabase();
+
+            if (cursor != null && cursor.getCount() > 0) return true;
+            else return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return false;
+        }
+    }
+
     public List<Item> getItemsListFromDB() {
 
         List<Item> itemsList = new ArrayList<>();
