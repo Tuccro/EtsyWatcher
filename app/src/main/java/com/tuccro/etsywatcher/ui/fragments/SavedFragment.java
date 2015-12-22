@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.db.DBObject;
 import com.tuccro.etsywatcher.model.Item;
-import com.tuccro.etsywatcher.ui.adapters.SavedListAdapter;
+import com.tuccro.etsywatcher.ui.adapters.SavedItemsListAdapter;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class SavedFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     RecyclerView recyclerView;
     SwipeRefreshLayout mSwipeRefreshLayout;
     List<Item> itemList;
-    SavedListAdapter savedListAdapter;
+    SavedItemsListAdapter savedItemsListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,8 +74,8 @@ public class SavedFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void run() {
                 itemList = items;
-                savedListAdapter = new SavedListAdapter(getActivity(), itemList);
-                recyclerView.setAdapter(savedListAdapter);
+                savedItemsListAdapter = new SavedItemsListAdapter(getActivity(), itemList);
+                recyclerView.setAdapter(savedItemsListAdapter);
             }
         });
     }

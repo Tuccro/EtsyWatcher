@@ -1,7 +1,6 @@
 package com.tuccro.etsywatcher.ui.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,19 +12,18 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.model.Item;
-import com.tuccro.etsywatcher.ui.DetailsActivity;
 
 import java.util.List;
 
 /**
- * Created by tuccro on 12/19/15.
+ * Created by tuccro on 12/22/15.
  */
-public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
+public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.ViewHolder> {
 
-    List<Item> itemList;
+    protected List<Item> itemList;
     Context context;
 
-    public SearchListAdapter(Context context, List<Item> itemList) {
+    public ItemsListAdapter(Context context, List<Item> itemList) {
         this.context = context;
         this.itemList = itemList;
     }
@@ -51,20 +49,20 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra(DetailsActivity.ATTR_ITEM, item);
-                context.startActivity(intent);
+                onCardClick(item);
             }
         });
-
         holder.textDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemList.remove(item);
-                SearchListAdapter.this.notifyDataSetChanged();
+                onDeleteClick(item);
             }
         });
     }
+
+    abstract void onDeleteClick(Item item);
+
+    abstract void onCardClick(Item item);
 
     @Override
     public int getItemCount() {

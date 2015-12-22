@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.model.Item;
-import com.tuccro.etsywatcher.ui.adapters.SearchListAdapter;
+import com.tuccro.etsywatcher.ui.adapters.SearchItemsListAdapter;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     RecyclerView recyclerView;
     List<Item> itemList;
-    SearchListAdapter searchListAdapter;
+    SearchItemsListAdapter searchItemsListAdapter;
     GridLayoutManager layoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -58,8 +58,8 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void initList() {
         if (itemList != null && !itemList.isEmpty()) {
 
-            searchListAdapter = new SearchListAdapter(getActivity(), itemList);
-            recyclerView.setAdapter(searchListAdapter);
+            searchItemsListAdapter = new SearchItemsListAdapter(getActivity(), itemList);
+            recyclerView.setAdapter(searchItemsListAdapter);
         }
     }
 
