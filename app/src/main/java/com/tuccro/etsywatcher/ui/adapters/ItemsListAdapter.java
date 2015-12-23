@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,7 +55,7 @@ public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAda
                 openItemFullDescription(item);
             }
         });
-        holder.textDelete.setOnClickListener(new View.OnClickListener() {
+        holder.imageButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDeleteClick(item);
@@ -80,7 +81,7 @@ public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAda
         CardView cardView;
         ImageView imageThumbnail;
         TextView textDescribe;
-        TextView textDelete;
+        ImageButton imageButtonDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -88,7 +89,7 @@ public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAda
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             imageThumbnail = (ImageView) itemView.findViewById(R.id.imageThumbnail);
             textDescribe = (TextView) itemView.findViewById(R.id.textDescribe);
-            textDelete = (TextView) itemView.findViewById(R.id.textDelete);
+            imageButtonDelete = (ImageButton) itemView.findViewById(R.id.imageButtonDelete);
         }
     }
 }

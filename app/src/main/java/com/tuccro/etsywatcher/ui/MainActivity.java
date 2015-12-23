@@ -22,7 +22,7 @@ import com.tuccro.etsywatcher.loaders.ItemsLoader;
 import com.tuccro.etsywatcher.model.Category;
 import com.tuccro.etsywatcher.model.Item;
 import com.tuccro.etsywatcher.ui.adapters.CategoriesAdapter;
-import com.tuccro.etsywatcher.ui.fragments.SavedFragment;
+import com.tuccro.etsywatcher.ui.fragments.FavoriteFragment;
 import com.tuccro.etsywatcher.ui.fragments.SearchFragment;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     List<Item> itemsList;
 
     SearchFragment searchFragment;
-    SavedFragment savedFragment;
+    FavoriteFragment favoriteFragment;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initFragments() {
         searchFragment = new SearchFragment();
-        savedFragment = new SavedFragment();
+        favoriteFragment = new FavoriteFragment();
     }
 
     private void initToolbar() {
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity
         public Fragment getItem(int position) {
 
             if (position == 0) return searchFragment;
-            else return savedFragment;
+            else return favoriteFragment;
         }
 
         @Override

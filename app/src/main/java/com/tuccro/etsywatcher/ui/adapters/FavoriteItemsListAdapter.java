@@ -2,21 +2,19 @@ package com.tuccro.etsywatcher.ui.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 
 import com.tuccro.etsywatcher.db.DBObject;
 import com.tuccro.etsywatcher.model.Item;
-import com.tuccro.etsywatcher.ui.DetailsActivity;
 
 import java.util.List;
 
 /**
  * Created by tuccro on 12/19/15.
  */
-public class SavedItemsListAdapter extends ItemsListAdapter {
+public class FavoriteItemsListAdapter extends ItemsListAdapter {
 
-    public SavedItemsListAdapter(Context context, List<Item> itemList) {
+    public FavoriteItemsListAdapter(Context context, List<Item> itemList) {
         super(context, itemList);
     }
 
@@ -41,8 +39,8 @@ public class SavedItemsListAdapter extends ItemsListAdapter {
                             }
                         }).start();
 
-                        SavedItemsListAdapter.super.itemList.remove(item);
-                        SavedItemsListAdapter.super.notifyDataSetChanged();
+                        FavoriteItemsListAdapter.super.itemList.remove(item);
+                        FavoriteItemsListAdapter.super.notifyDataSetChanged();
                         break;
                 }
             }
