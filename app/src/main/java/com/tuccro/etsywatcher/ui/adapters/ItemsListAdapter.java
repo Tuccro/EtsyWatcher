@@ -1,6 +1,7 @@
 package com.tuccro.etsywatcher.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.model.Item;
+import com.tuccro.etsywatcher.ui.DetailsActivity;
 
 import java.util.List;
 
@@ -49,7 +51,7 @@ public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAda
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCardClick(item);
+                openItemFullDescription(item);
             }
         });
         holder.textDelete.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +67,13 @@ public abstract class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAda
         return itemList.size();
     }
 
-    protected abstract void onDeleteClick(Item item);
+    protected void openItemFullDescription(Item item) {
+        Intent intent = new Intent(context, DetailsActivity.class);
+        intent.putExtra(DetailsActivity.ATTR_ITEM, item);
+        context.startActivity(intent);
+    }
 
-    protected abstract void onCardClick(Item item);
+    protected abstract void onDeleteClick(Item item);
 
     class ViewHolder extends RecyclerView.ViewHolder {
 

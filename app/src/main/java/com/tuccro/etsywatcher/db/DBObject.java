@@ -74,15 +74,17 @@ public class DBObject {
                     , null
                     , DBConstants.DB_ITEMS_TABLE_ID + "=" + String.valueOf(item.getId())
                     , null, null, null, null);
-            closeDatabase();
 
-            if (cursor != null && cursor.getCount() > 0) return true;
-            else return false;
+            boolean result;
+            if (cursor != null && cursor.getCount() > 0) result = true;
+            else result = false;
+
+            closeDatabase();
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            return false;
         }
+        return false;
     }
 
     public List<Item> getItemsListFromDB() {

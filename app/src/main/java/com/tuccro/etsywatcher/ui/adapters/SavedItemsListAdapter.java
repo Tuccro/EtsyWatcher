@@ -51,11 +51,4 @@ public class SavedItemsListAdapter extends ItemsListAdapter {
         deleteItemDialog.setPositiveButton(android.R.string.yes, onDeleteClickListener);
         deleteItemDialog.show();
     }
-
-    @Override
-    protected void onCardClick(Item item) {
-        Intent intent = new Intent(context, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.ATTR_ITEM, item);
-        context.startActivity(intent);
-    }
 }
