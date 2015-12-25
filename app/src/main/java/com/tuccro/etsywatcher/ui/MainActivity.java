@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.widget.Spinner;
 
 import com.tuccro.etsywatcher.R;
-import com.tuccro.etsywatcher.db.DBObject;
 import com.tuccro.etsywatcher.loaders.CategoriesLoader;
 import com.tuccro.etsywatcher.loaders.ImagesUrlsLoader;
 import com.tuccro.etsywatcher.loaders.ItemsLoader;
@@ -153,8 +152,6 @@ public class MainActivity extends AppCompatActivity
                 items = (List<Item>) data;
                 this.itemsList = items;
 
-                DBObject dbObject = new DBObject(this);
-
                 searchFragment.fillList(itemsList);
                 searchFragment.setRefreshLayoutRefreshing(false);
         }
@@ -218,8 +215,6 @@ public class MainActivity extends AppCompatActivity
             if (itemsLoader != null) {
                 itemsLoader.forceLoad();
                 searchFragment.setRefreshLayoutRefreshing(true);
-//                fragmentSearch.setProgressBarVisibility(true);
-//                fragmentSearch.initList();
             }
 
             mViewPager.setCurrentItem(0);

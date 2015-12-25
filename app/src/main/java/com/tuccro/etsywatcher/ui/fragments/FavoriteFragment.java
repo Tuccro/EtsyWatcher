@@ -46,6 +46,12 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     public void initList() {
         new Thread(new Runnable() {
             @Override

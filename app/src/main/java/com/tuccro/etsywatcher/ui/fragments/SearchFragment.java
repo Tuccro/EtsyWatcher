@@ -52,7 +52,14 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
+        setRetainInstance(true);
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
     }
 
     public void initList() {
