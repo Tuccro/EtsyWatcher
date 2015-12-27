@@ -68,12 +68,45 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+            searchFragment = (SearchFragment) getSupportFragmentManager().getFragment(
+                    savedInstanceState, "current_search");
+        }
+
         initFragments();
     }
 
     private void initFragments() {
-        searchFragment = new SearchFragment();
+
+        if (searchFragment == null) {
+            searchFragment = new SearchFragment();
+        }
+
         favoriteFragment = new FavoriteFragment();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        try {
+            //Save the fragment's instance
+            getSupportFragmentManager().putFragment(outState, "current_search", searchFragment);
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+            searchFragment = (SearchFragment) getSupportFragmentManager().getFragment(
+                    savedInstanceState, "mContent");
+        }
     }
 
     private void initToolbar() {
@@ -130,7 +163,8 @@ public class MainActivity extends AppCompatActivity
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 spinnerCategories.setAdapter(adapter);
-                if (spinnerCategories.getCount() > 0) searchView.setEnabled(true);
+                if (spinnerCategories.getCount() > 0 && searchView != null)
+                    searchView.setEnabled(true);
                 break;
 
             case ITEMS_LOADER_ID:

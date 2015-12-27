@@ -15,6 +15,7 @@ import com.tuccro.etsywatcher.R;
 import com.tuccro.etsywatcher.model.Item;
 import com.tuccro.etsywatcher.ui.adapters.SearchItemsListAdapter;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -59,8 +60,20 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setRetainInstance(true);
+//        setRetainInstance(true);
+
+        if (savedInstanceState != null) {
+            itemList = (List<Item>) savedInstanceState.getSerializable("list");
+        }
+        initList();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("list", (Serializable) itemList);
+    }
+
 
     public void initList() {
         if (itemList != null && !itemList.isEmpty()) {
