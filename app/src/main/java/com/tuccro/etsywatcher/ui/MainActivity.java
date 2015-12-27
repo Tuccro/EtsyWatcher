@@ -98,17 +98,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            //Restore the fragment's instance
-            searchFragment = (SearchFragment) getSupportFragmentManager().getFragment(
-                    savedInstanceState, "mContent");
-        }
-    }
-
     private void initToolbar() {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

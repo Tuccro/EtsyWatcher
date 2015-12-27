@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String ITEM_LIST = "item list";
+
     RecyclerView recyclerView;
     List<Item> itemList;
     SearchItemsListAdapter searchItemsListAdapter;
@@ -60,10 +62,9 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        setRetainInstance(true);
 
         if (savedInstanceState != null) {
-            itemList = (List<Item>) savedInstanceState.getSerializable("list");
+            itemList = (List<Item>) savedInstanceState.getSerializable(ITEM_LIST);
         }
         initList();
     }
@@ -71,9 +72,8 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("list", (Serializable) itemList);
+        outState.putSerializable(ITEM_LIST, (Serializable) itemList);
     }
-
 
     public void initList() {
         if (itemList != null && !itemList.isEmpty()) {
