@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,12 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     RecyclerView recyclerView;
     List<Item> itemList;
     SearchItemsListAdapter searchItemsListAdapter;
-    GridLayoutManager layoutManager;
+    GridLayoutManager mLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     OnListEvents onListEvents;
+
+    private boolean mIsLoading = false;
 
     @Override
     public void onAttach(Context context) {
@@ -44,11 +47,12 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
-        layoutManager = new GridLayoutManager(getActivity(), 3);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mLayoutManager = new GridLayoutManager(getActivity(), 3);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.listSearch);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setOnScrollListener(mRecyclerViewOnScrollListener);
 
         initList();
 
@@ -76,21 +80,36 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     public void initList() {
+
         if (itemList != null && !itemList.isEmpty()) {
 
-            searchItemsListAdapter = new SearchItemsListAdapter(getActivity(), itemList);
-            recyclerView.setAdapter(searchItemsListAdapter);
+            if (searchItemsListAdapter != null) {
+                searchItemsListAdapter.notifyDataSetChanged();
+            } else {
+                searchItemsListAdapter = new SearchItemsListAdapter(getActivity(), itemList);
+                recyclerView.setAdapter(searchItemsListAdapter);
+            }
         }
     }
 
     public void fillList(List<Item> itemsList) {
 
-        this.itemList = itemsList;
+        if (this.itemList == null) {
+            this.itemList = itemsList;
+        } else this.itemList.addAll(itemsList);
         initList();
+    }
+
+    public void clearList() {
+        if (this.itemList != null) {
+            this.itemList.clear();
+            searchItemsListAdapter.notifyDataSetChanged();
+        }
     }
 
     public void setRefreshLayoutRefreshing(boolean refreshing) {
         mSwipeRefreshLayout.setRefreshing(refreshing);
+        mIsLoading = refreshing;
     }
 
     @Override
@@ -100,7 +119,33 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         onListEvents.onListUpdate();
     }
 
+    private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener =
+            new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView,
+                                                 int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int visibleItemCount = mLayoutManager.getChildCount();
+                    int totalItemCount = mLayoutManager.getItemCount();
+                    int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+
+                    if (!mIsLoading) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                                && firstVisibleItemPosition >= 0) {
+                            onListEvents.loadMoreItems();
+                        }
+                    }
+                }
+            };
+
     public interface OnListEvents {
         void onListUpdate();
+
+        void loadMoreItems();
     }
 }

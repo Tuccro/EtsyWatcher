@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity
             loader = new CategoriesLoader(MainActivity.this);
         } else if (id == ITEMS_LOADER_ID) loader = new ItemsLoader(MainActivity.this, args);
         else loader = new ImagesUrlsLoader(MainActivity.this, itemsList);
+
         return loader;
     }
 
@@ -161,12 +162,14 @@ public class MainActivity extends AppCompatActivity
                 items = (List<Item>) data;
                 this.itemsList = items;
 
-                getSupportLoaderManager().initLoader(IMAGES_LOADER_ID, null, MainActivity.this);
-                Loader imagesUrlsLoader = getSupportLoaderManager().getLoader(IMAGES_LOADER_ID);
+                if (!itemsList.isEmpty()) {
+                    getSupportLoaderManager().initLoader(IMAGES_LOADER_ID, null, MainActivity.this);
+                    Loader imagesUrlsLoader = getSupportLoaderManager().getLoader(IMAGES_LOADER_ID);
 
-                if (imagesUrlsLoader != null) {
-                    imagesUrlsLoader.forceLoad();
-                }
+                    if (imagesUrlsLoader != null) {
+                        imagesUrlsLoader.forceLoad();
+                    }
+                } else searchFragment.setRefreshLayoutRefreshing(false);
 
                 break;
 
@@ -174,6 +177,7 @@ public class MainActivity extends AppCompatActivity
 
                 items = (List<Item>) data;
                 this.itemsList = items;
+                getSupportLoaderManager().destroyLoader(IMAGES_LOADER_ID);
 
                 searchFragment.fillList(itemsList);
                 searchFragment.setRefreshLayoutRefreshing(false);
@@ -188,6 +192,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListUpdate() {
         searchFragment.setRefreshLayoutRefreshing(false);
+    }
+
+    @Override
+    public void loadMoreItems() {
+
+        if (itemsLoader != null) {
+            itemsLoader.forceLoad();
+            searchFragment.setRefreshLayoutRefreshing(true);
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -227,17 +240,22 @@ public class MainActivity extends AppCompatActivity
 
             Bundle bundle = new Bundle();
             bundle.putString(ItemsLoader.ARG_QUERY, query);
-            bundle.putString(ItemsLoader.ARG_CATEGORY
-                    , ((Category) spinnerCategories.getSelectedItem()).getName());
 
-//            searchLoaderId = query.hashCode();
+            try {
+                bundle.putString(ItemsLoader.ARG_CATEGORY
+                        , ((Category) spinnerCategories.getSelectedItem()).getName());
+            } catch (NullPointerException e) {
+                return true;
+            }
 
+            getSupportLoaderManager().destroyLoader(ITEMS_LOADER_ID);
             getSupportLoaderManager().initLoader(ITEMS_LOADER_ID, bundle, MainActivity.this);
             itemsLoader = getSupportLoaderManager().getLoader(ITEMS_LOADER_ID);
 
             if (itemsLoader != null) {
                 itemsLoader.forceLoad();
                 searchFragment.setRefreshLayoutRefreshing(true);
+                searchFragment.clearList();
             }
 
             mViewPager.setCurrentItem(0);
