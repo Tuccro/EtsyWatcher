@@ -1,4 +1,4 @@
-package com.tuccro.etsywatcher.ui;
+package com.tuccro.etsywatcher.ui.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
